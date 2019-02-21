@@ -1,4 +1,4 @@
-# Microposts
+# postMe Project
 
 ## Usage
 
@@ -24,4 +24,8 @@ Compile and build
 $ npm run build
 ```
 
+### Development
 
+```sh
+$ npm run dev
+```
