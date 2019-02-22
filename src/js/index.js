@@ -10,6 +10,8 @@ document.querySelector('.post-submit').addEventListener('click', createPost);
 document.querySelector('#posts').addEventListener('click', deletePost);
 //Listen for edit data
 document.querySelector('#posts').addEventListener('click', enableEdit);
+//Listen for cancel
+document.querySelector('.card-form').addEventListener('click', cancelEdit);
 
 //Get posts
 function getPosts(){
@@ -21,24 +23,44 @@ function getPosts(){
 function createPost(){
   const title = document.querySelector('#title').value;
   const body = document.querySelector('#body').value;
+  const id = document.querySelector('#id').value;
+
+  const data = {
+    title,
+    body
+  }
+  //Validate input
   if(title === '' || body === ''){
     ui.ShowAlert('Please add some thoughs :)', 'alert alert-danger');
   } else {
-    const data = {
-      title,
-      body
-    }
 
-    //Create Post
-    http.post('http://localhost:3000/posts', data)
-      .then(data => {
-        ui.ShowAlert('Post added', 'alert alert-success');
-        ui.clearFields();
-        getPosts();
-      })
-      .catch(err => console.log(err));
+    //Check for id
+    if(id === ''){
+      //Create Post
+      http.post('http://localhost:3000/posts', data)
+        .then(data => {
+          ui.ShowAlert('Post added', 'alert alert-success');
+          ui.clearFields();
+          getPosts();
+        })
+        .catch(err => console.log(err));
+
+    } else {
+      //Update post
+      http.put(`http://localhost:3000/posts/${id}`, data)
+        .then(data => {
+          ui.ShowAlert('Post updated', 'alert alert-success');
+          ui.changeFormState('add');
+          getPosts();
+        })
+        .catch(err => console.log(err));
+
+    }
   }
 }
+
+
+
 
 //Delete Post
 function deletePost(e){
@@ -70,6 +92,14 @@ function enableEdit(e){
     //Fill form with current post
     ui.fillForm(data);
 
+  }
+  e.preventDefault();
+}
+
+//Cancel edit
+function cancelEdit(e){
+  if(e.target.classList.contains('post-cancel')){
+    ui.changeFormState('add');
   }
   e.preventDefault();
 }
