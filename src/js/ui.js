@@ -60,6 +60,40 @@ class UI {
     this.titleInput.value = data.title;
     this.bodyInput.value = data.body;
     this.idInput.value = data.id;
+
+    this.changeFormState('edit');
+  }
+  //Clear ID hidden value
+  clearIdInput(){
+    this.idInput.value = '';
+  }
+  changeFormState(type){
+    if(type === 'edit'){
+      this.postSubmit.textContent = 'Update Post';
+      this.postSubmit.className = 'post-submit btn btn-warning btn-block';
+
+      //Create cancel btn
+      const button = document.createElement('button');
+      button.className = 'post-cancel btn btn-light btn-block';
+      button.appendChild(document.createTextNode('Cancel Edit'));
+      //Get a parent
+      const cardForm = document.querySelector('.card-form');
+      //Get element to insertBefore
+      const formEnd = document.querySelector('form-end');
+      //Insert the button
+      cardForm.insertBefore(button, formEnd);
+    } else {
+      this.postSubmit.textContent = 'Done';
+      this.postSubmit.className = 'post-submit btn btn-primary btn-block';
+      //Remove cancel btn if it there
+      if(document.querySelector('.post-cancel')){
+        document.querySelector('.post-canccancel').remove();
+      }
+      //Clear ID from the hidden field
+      this.clearIdInput();
+      //Clear text
+      this.clearFields();
+    }
   }
 }
 
