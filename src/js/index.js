@@ -8,7 +8,8 @@ document.addEventListener('DOMContentLoaded', getPosts);
 document.querySelector('.post-submit').addEventListener('click', createPost);
 //Listen for delete
 document.querySelector('#posts').addEventListener('click', deletePost);
-
+//Listen for edit data
+document.querySelector('#posts').addEventListener('click', enableEdit);
 
 //Get posts
 function getPosts(){
@@ -34,7 +35,7 @@ function createPost(){
     })
     .catch(err => console.log(err));
 }
-
+//Delete Post
 function deletePost(e){
   e.preventDefault();
   if(e.target.parentElement.classList.contains('delete')){
@@ -48,4 +49,22 @@ function deletePost(e){
         .catch(err => console.log(err));
       }
   }
+}
+//Enable Edit Data
+function enableEdit(e){
+  if(e.target.parentElement.classList.contains("edit")){
+    const id = e.target.parentElement.dataset.id;
+    const title = e.target.parentElement.previousElementSibling.previousElementSibling.textContent;
+    const body = e.target.parentElement.previousElementSibling.textContent;
+    const data = {
+      id,
+      title,
+      body
+    }
+
+    //Fill form with current post
+    ui.fillForm(data);
+
+  }
+  e.preventDefault();
 }
